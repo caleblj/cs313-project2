@@ -1,12 +1,13 @@
 var express = require('express');
+var pga = require('pga');
 var app = express();
 var bodyParser = require('body-parser');
 var db = pga({
 	user: 'postgres',
-	password: '',
+	password: process.env.DB_PASS,
 	database: 'postgres',
 	host: 'localhost',
-	port: 5432,
+	port: 5433,
 	max: 10
 
 })
@@ -16,7 +17,7 @@ app.use('/', express.static('static'));
 
 app.use(bodyParser());
 
-app.get('/person', funtion(request, response){
+app.get('/person', function(request, response){
 
 db.query('SELECT * FROM memeber;', function(error, result){
 	if (error){
@@ -42,3 +43,4 @@ app.post('/person', function (request, response) {
 	// body...
 	})
 })
+app.listen(process.env.PORT || 3000);
