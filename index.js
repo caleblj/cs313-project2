@@ -4,6 +4,7 @@ var app = express();
 var bodyParser = require('body-parser');
 const url = require('url');
 var db = pga(getConfig());
+congole.log(getConfig());
 
 
 
