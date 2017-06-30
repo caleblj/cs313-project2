@@ -22,7 +22,7 @@ return {
   database: params.pathname.split('/')[1],
   ssl: true
 };
-}
+
 
 
 return 	{
