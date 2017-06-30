@@ -21,8 +21,8 @@ return {
   port: params.port,
   database: params.pathname.split('/')[1],
   ssl: true
-};
-
+}
+}
 
 
 return 	{
