@@ -59,7 +59,7 @@ app.get('/chores', function(request, response){
 
 
 app.get('/person/:id/chores', function(request, response){
-	db.query(`SELECT p.* c.* FROM person p
+	db.query(`SELECT p.*, c.* FROM person p
 		INNER JOIN chore_assignment ca ON p.id = ca.person_id
 		INNER JOIN chore c ON ca.chore_id = c.id WHERE p.id = $1::int;`, [request.params.id], function (error, result){
 	if (error){
