@@ -41,7 +41,7 @@ app.use('/', express.static('static'));
 app.use(bodyParser());
 
 app.get('/chores', function(request, response){
-	db.query('SELECT * from chore;', function(error, result))
+	db.query('SELECT * from chore;', function(error, result){
 	if (error){
 		console.error(error);
 		response.end();
@@ -52,10 +52,10 @@ app.get('/chores', function(request, response){
 
 
 })
-
+})
 
 app.get('/chores/:id', function(request, response){
-	db.query('SELECT * from chore WHERE id = $1::int LIMIT 1;', [ request.params.id ] ,function(error, result))
+	db.query('SELECT * from chore WHERE id = $1::int LIMIT 1;', [ request.params.id ] ,function(error, result){
 	if (error){
 		console.error(error);
 		response.end();
@@ -66,7 +66,7 @@ app.get('/chores/:id', function(request, response){
 
 
 })
-
+})
 
 
 
