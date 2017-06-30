@@ -40,6 +40,36 @@ app.use('/', express.static('static'));
 
 app.use(bodyParser());
 
+app.get('/chores', function(request, response){
+	db.query('SELECT * from chore;', function(error, result))
+	if (error){
+		console.error(error);
+		response.end();
+		return;
+	}
+	response.json(result.rows);
+
+
+
+})
+
+
+app.get('/chores/:id', function(request, response){
+	db.query('SELECT * from chore WHERE id = $1::int LIMIT 1;', [ request.params.id ] ,function(error, result))
+	if (error){
+		console.error(error);
+		response.end();
+		return;
+	}
+	response.json(result.rows[0]);
+
+
+
+})
+
+
+
+
 app.get('/person', function(request, response){
 
 db.query('SELECT * FROM person;', function(error, result){
@@ -48,7 +78,7 @@ db.query('SELECT * FROM person;', function(error, result){
 		response.end();
 		return;
 	}
-	console.log(result.rows);
+	response.json(result.rows);
 	response.end();
 })
 })
