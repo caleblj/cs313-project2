@@ -42,7 +42,7 @@ app.use(bodyParser());
 
 app.get('/person', function(request, response){
 
-db.query('SELECT * FROM memeber;', function(error, result){
+db.query('SELECT * FROM person;', function(error, result){
 	if (error){
 		console.error(error);
 		response.end();
@@ -55,7 +55,7 @@ db.query('SELECT * FROM memeber;', function(error, result){
 app.post('/person', function (request, response) {
 	var name = request.body.name;
 
-	db.query('INSERT INTO member (name) VALUES($1::text) RETURNING id;', [ name ],  function(error, result){
+	db.query('INSERT INTO person (name) VALUES($1::text) RETURNING id;', [ name ],  function(error, result){
 	if (error){
 		console.error(error);
 		response.end();
