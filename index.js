@@ -2,16 +2,38 @@ var express = require('express');
 var pga = require('pga');
 var app = express();
 var bodyParser = require('body-parser');
-var db = pga({
+const url = require('url');
+var db = pga(getConfig());
+
+
+
+
+
+function getConfig(){
+if(process.env.DATABASE_URL){
+const params = url.parse(process.env.DATABASE_URL);
+const auth = params.auth.split(':');
+
+return {
+  user: auth[0],
+  password: auth[1],
+  host: params.hostname,
+  port: params.port,
+  database: params.pathname.split('/')[1],
+  ssl: true
+};
+}
+
+
+return 	{
 	user: 'postgres',
 	password: process.env.DB_PASS,
 	database: 'postgres',
 	host: 'localhost',
 	port: 5433,
 	max: 10
-
-})
-
+	};
+}
 
 app.use('/', express.static('static'));
 
