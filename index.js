@@ -40,6 +40,9 @@ app.use('/', express.static('static'));
 
 app.use(bodyParser());
 
+
+
+
 app.get('/chores', function(request, response){
 	db.query('SELECT * from chore;', function(error, result){
 	if (error){
@@ -53,6 +56,21 @@ app.get('/chores', function(request, response){
 
 })
 })
+
+
+app.get('/person/:id/chores', function(request, response){
+	db.query(`SELECT p.* c.* FROM person p
+		INNER JOIN chore_assignment ca ON p.id = ca.person_id
+		INNER JOIN chore c ON ca.chore_id = c.id WHERE p.id = $1::int;`, [request.params.id], function (error, result){
+	if (error){
+		console.error(error);
+		response.end();
+		return;
+	}
+		response.json(result.rows);
+		})
+})
+
 
 app.get('/chores/:id', function(request, response){
 	db.query('SELECT * from chore WHERE id = $1::int LIMIT 1;', [ request.params.id ] ,function(error, result){
