@@ -5,16 +5,10 @@ var bodyParser = require('body-parser');
 const url = require('url');
 var db = pga(getConfig());
 console.log(getConfig());
-
-
-
-
-
 function getConfig(){
 if(process.env.DATABASE_URL){
 const params = url.parse(process.env.DATABASE_URL);
 const auth = params.auth.split(':');
-
 return {
   user: auth[0],
   password: auth[1],
@@ -24,8 +18,6 @@ return {
   ssl: true
 }
 }
-
-
 return 	{
 	user: 'postgres',
 	password: process.env.DB_PASS,
@@ -35,12 +27,8 @@ return 	{
 	max: 10
 	};
 }
-
 app.use('/', express.static('static'));
-
 app.use(bodyParser());
-
-
 
 
 app.get('/chores', function(request, response){
@@ -51,9 +39,6 @@ app.get('/chores', function(request, response){
 		return;
 	}
 	response.json(result.rows);
-
-
-
 })
 })
 
@@ -80,13 +65,10 @@ app.get('/chores/:id', function(request, response){
 		return;
 	}
 	response.json(result.rows[0]);
-
-
-
 })
 })
 
-app.post('/chore', function (request, response) {
+app.post('/chores', function (request, response) {
 	var name = request.body.name;
 
 	db.query('INSERT INTO chores (name) VALUES($1::text) RETURNING id;', [ name ],  function(error, result){
