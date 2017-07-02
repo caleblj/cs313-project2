@@ -86,6 +86,19 @@ app.get('/chores/:id', function(request, response){
 })
 })
 
+app.post('/chores', function (request, response) {
+	var name = request.body.name;
+
+	db.query('INSERT INTO chores (name) VALUES($1::text) RETURNING id;', [ name ],  function(error, result){
+	if (error){
+		console.error(error);
+		response.end();
+		return;
+	}
+	console.log(result.rows);
+	response.end();
+	})
+})
 
 
 app.get('/person', function(request, response){
@@ -111,7 +124,6 @@ app.post('/person', function (request, response) {
 	}
 	console.log(result.rows);
 	response.end();
-	// body...
 	})
 })
 app.listen(process.env.PORT || 3000);
