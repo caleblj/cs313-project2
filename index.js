@@ -86,7 +86,7 @@ app.get('/chores/:id', function(request, response){
 })
 })
 
-app.post('/chores', function (request, response) {
+app.post('/chore', function (request, response) {
 	var name = request.body.name;
 
 	db.query('INSERT INTO chores (name) VALUES($1::text) RETURNING id;', [ name ],  function(error, result){
