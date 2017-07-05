@@ -31,6 +31,44 @@ app.use('/', express.static('static'));
 app.use(bodyParser());
 
 
+
+app.get('/assignChore', function(request, response){
+	db.transact([
+		db.sql`SELECT id, name FROM person;`,
+		db.sql`SELECT id, name FROM chore;`
+		] , function(error, result){
+	if (error){
+		console.error(error);
+		response.end();
+		return;
+	}
+
+	var personRows = result[0].rows,
+		choreRows = result[1].rows;
+	response.header('Content-Type', 'text/html');
+	response.write('<form action="/api/assignChore" method="post">');
+
+response.write('<select name="person">');
+for (var i = 0; i < personRows.length; i++){
+	response.write('<option value="'+ personRows[i].id +'">' + personRows[i].name + '</option>');
+}
+response.write('</select>');
+
+
+response.write('<select name="chore">');
+for (var i = 0; i < choreRows.length; i++){
+	response.write('<option value="'+ choreRows[i].id +'">' + choreRows[i].name + '</option>');
+}
+response.write('</select>');
+
+
+	response.write('<button>Assign</button>');
+	response.write('</form>');	
+	response.end();
+	})
+})
+
+
 app.get('/chores', function(request, response){
 	db.query('SELECT * from chore;', function(error, result){
 	if (error){
@@ -68,10 +106,10 @@ app.get('/chores/:id', function(request, response){
 })
 })
 
-app.post('/chores', function (request, response) {
+app.post('/api/chores', function (request, response) {
 	var name = request.body.name;
 
-	db.query('INSERT INTO chores (name) VALUES($1::text) RETURNING id;', [ name ],  function(error, result){
+	db.query('INSERT INTO chore (name) VALUES($1::text) RETURNING id;', [ name ],  function(error, result){
 	if (error){
 		console.error(error);
 		response.end();

@@ -15,6 +15,6 @@
   "dependencies": {
     "body-parser": "^1.17.2",
     "express": "^4.15.3",
-    "pga": "0.0.2"
+    "pga": "^1.2.0"
   }
 }
