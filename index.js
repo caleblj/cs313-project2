@@ -69,6 +69,23 @@ response.write('</select>');
 })
 
 
+app.post('/api/assignChore', function(request, response){
+	var person = request.body.person,
+	chore = request.body.chore;
+
+	db.query(db.sql`INSERT INTO chore_assignment (person_id, chore_id)
+		VALUES (${person}::int, ${chore}::int) RETURNING person_id, chore_id;`, function(error, result){
+	if (error){
+		console.error(error);
+		response.end();
+		return;
+	}
+		
+	response.json(result.rows[0]);
+})
+})
+
+
 app.get('/chores', function(request, response){
 	db.query('SELECT * from chore;', function(error, result){
 	if (error){
