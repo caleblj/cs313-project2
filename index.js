@@ -73,8 +73,12 @@ app.post('/api/assignChore', function(request, response){
 	var person = request.body.person,
 	chore = request.body.chore;
 
-	db.query(db.sql`INSERT INTO chore_assignment (person_id, chore_id)
-		VALUES (${person}::int, ${chore}::int) RETURNING person_id, chore_id;`, function(error, result){
+	db.query(db.sql`WITH results AS
+(INSERT INTO chore_assignment (person_id, chore_id)
+  VALUES (${person}::int, ${chore}::int) RETURNING person_id, chore_id)
+SELECT (SELECT name FROM person WHERE id = results.person_id) AS person_name,
+       (SELECT name FROM chore  WHERE id = results.chore_id)  AS chore_name
+FROM results;`, function(error, result){
 	if (error){
 		console.error(error);
 		response.end();
@@ -86,7 +90,7 @@ app.post('/api/assignChore', function(request, response){
 })
 
 
-app.get('/chores', function(request, response){
+app.get('/api/chores', function(request, response){
 	db.query('SELECT * from chore;', function(error, result){
 	if (error){
 		console.error(error);
@@ -123,7 +127,7 @@ app.get('/chores/:id', function(request, response){
 })
 })
 
-app.post('/api/chores', function (request, response) {
+app.post('/chores', function (request, response) {
 	var name = request.body.name;
 
 	db.query('INSERT INTO chore (name) VALUES($1::text) RETURNING id;', [ name ],  function(error, result){
