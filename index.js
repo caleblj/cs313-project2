@@ -4,6 +4,7 @@ var app = express();
 var bodyParser = require('body-parser');
 const url = require('url');
 var db = pga(getConfig());
+var path = require('path');
 console.log(getConfig());
 function getConfig(){
 if(process.env.DATABASE_URL){
@@ -27,10 +28,41 @@ return 	{
 	max: 10
 	};
 }
-app.use('/', express.static('static'));
+
 app.use(bodyParser());
 
 
+
+app.get('/', function(request, response){
+
+
+	db.query(db.sql`SELECT id, name FROM person;`, function(error, result){
+	if (error){
+		console.error(error);
+		response.end();
+		return;
+	}
+	response.write('<script src="/ajax.js"></script>');
+
+	response.write('<button id="button">Whatever</button>')
+
+
+	response.write('<select id="person"');
+for (var i = 0; i < result.rows.length; i++){
+	response.write('<option value="'+ result.rows[i].id +'">' + result.rows[i].name + '</option>');
+
+}
+	response.write('</select>');
+	response.write('<a href="/assignChore"> assign </a><br />');
+	response.write('<a href="/person"> person </a><br/>');
+	response.write('<a href="/chores"> chores </a><br/>');
+	response.write('<div id="output"></div>');
+	response.end();
+});
+})
+
+
+app.use('/', express.static('static'));
 
 app.get('/assignChore', function(request, response){
 	db.transact([
@@ -142,7 +174,7 @@ app.post('/chores', function (request, response) {
 })
 
 
-app.get('/person', function(request, response){
+app.get('/api/person', function(request, response){
 
 db.query('SELECT * FROM person;', function(error, result){
 	if (error){
