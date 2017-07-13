@@ -123,7 +123,7 @@ FROM results;`, function(error, result){
 })
 
 
-app.get('/api/chores', function(request, response){
+app.get('/chores', function(request, response){
 	db.query('SELECT * from chore;', function(error, result){
 	if (error){
 		console.error(error);
@@ -160,7 +160,7 @@ app.get('/chores/:id', function(request, response){
 })
 })
 
-app.post('/chores', function (request, response) {
+app.post('/api/chores', function (request, response) {
 	var name = request.body.name;
 	db.query('INSERT INTO chore (name) VALUES($1::text) RETURNING id;', [ name ],  function(error, result){
 	if (error){
