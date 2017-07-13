@@ -96,6 +96,7 @@ response.write('</select>');
 
 	response.write('<button>Assign</button>');
 	response.write('</form>');	
+	response.write('<br/>');
 	response.end();
 	})
 })
@@ -161,7 +162,6 @@ app.get('/chores/:id', function(request, response){
 
 app.post('/chores', function (request, response) {
 	var name = request.body.name;
-
 	db.query('INSERT INTO chore (name) VALUES($1::text) RETURNING id;', [ name ],  function(error, result){
 	if (error){
 		console.error(error);
