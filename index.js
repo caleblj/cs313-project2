@@ -53,6 +53,7 @@ for (var i = 0; i < result.rows.length; i++){
 
 }
 	response.write('</select>');
+	response.write('<br/>');
 	response.write('<a href="/assignChore"> assign </a><br />');
 	response.write('<a href="/person"> person </a><br/>');
 	response.write('<a href="/chores"> chores </a><br/>');
